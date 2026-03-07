@@ -124,11 +124,13 @@ Sistem sledi naslednjim načelom:
 - Domena ne pozna baze podatkov ali frameworkov.
 - Odvisnosti tečejo **od zunanjosti proti notranjosti**.
 
+```
 API / Infrastructure
 ↓
 Application (Use Cases)
 ↓
 Domain (Business Logic)
+```
 
 - Mikrostoritve so **samostojne in ohlapno povezane**.
 
@@ -138,29 +140,30 @@ Domain (Business Logic)
 
 Struktura projekta je organizirana po **poslovnih konceptih sistema**.
 
+```
 taskflow-system/
 │
 ├── uporabniki/
-│ ├── domena/
-│ ├── aplikacija/
-│ ├── infrastruktura/
-│ └── api/
+│   ├── domena/
+│   ├── aplikacija/
+│   ├── infrastruktura/
+│   └── api/
 │
 ├── projekti/
-│ ├── domena/
-│ ├── aplikacija/
-│ ├── infrastruktura/
-│ └── api/
+│   ├── domena/
+│   ├── aplikacija/
+│   ├── infrastruktura/
+│   └── api/
 │
 ├── naloge/
-│ ├── domena/
-│ ├── aplikacija/
-│ ├── infrastruktura/
-│ └── api/
+│   ├── domena/
+│   ├── aplikacija/
+│   ├── infrastruktura/
+│   └── api/
 │
 ├── spletni-vmesnik/
-│ ├── src/
-│ └── public/
+│   ├── src/
+│   └── public/
 │
 └── README.md
-
+```
