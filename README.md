@@ -32,7 +32,44 @@ Sistem predstavlja poenostavljeno različico orodij kot so:
 
 Sistem je sestavljen iz **treh mikrostoritev** in **spletne aplikacije (UI)**.
 
-"slika"
+```mermaid
+flowchart TD
+
+A[Brskalnik] -->|HTTP| B[Spletni uporabniški vmesnik]
+
+B -->|REST API| C[User Service]
+B -->|REST API| D[Project Service]
+B -->|REST API| E[Task Service]
+
+C --> F[(Users Database)]
+D --> G[(Projects Database)]
+E --> H[(Tasks Database)]
+
+E -->|REST API| C
+E -->|REST API| D
+```
+
+### Protokoli komunikacije
+
+| Komunikacija | Protokol |
+|--------------|----------|
+| Brskalnik → Spletni vmesnik | HTTP |
+| Spletni vmesnik → Mikrostoritve | REST API (HTTP) |
+| Mikrostoritve med seboj | REST API (HTTP) |
+
+### Podatkovne baze
+
+Vsaka mikrostoritev ima svojo podatkovno bazo, kar omogoča:
+
+- neodvisnost storitev
+- boljšo skalabilnost
+- manjšo sklopljenost sistema
+
+| Mikrostoritev | Podatkovna baza |
+|---------------|----------------|
+| User Service | Users DB |
+| Project Service | Projects DB |
+| Task Service | Tasks DB |
 
 ---
 
