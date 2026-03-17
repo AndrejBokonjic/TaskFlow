@@ -4,7 +4,7 @@ from domena.user import User
 def test_create_user():
     repo = UserRepository()
 
-    user = User(username="test", email="test@test.com")
+    user = User(username="test", email="test@test.com", password="testtest")
 
     created = repo.create(user)
 
