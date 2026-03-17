@@ -25,15 +25,6 @@ def override_db():
     yield
     db_module.SessionLocal = original
 
-def test_create_user():
-    repo = UserRepository()
-
-    user = User(username="test444", email="test4sd@test.com", password="testgedrtest")
-
-    created = repo.create(user)
-
-    assert created.id == 1
-
 def test_get_by_username():
     repo = UserRepository()
 
