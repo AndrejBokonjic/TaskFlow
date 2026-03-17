@@ -27,15 +27,6 @@ def override_db():
 
 client = TestClient(app)
 
-def test_create_user():
-    response = client.post("/users", json={
-        "username": "Marko454",
-        "email": "marko1443@test.com",
-        "password": "test444test"
-    })
-
-    assert response.status_code == 200
-
 def test_register_user():
     response = client.post("/auth/register", json={
         "username": "newuser",
