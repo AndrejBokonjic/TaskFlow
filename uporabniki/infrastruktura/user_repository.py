@@ -26,3 +26,18 @@ class UserRepository:
         for user in self.users:
             if user.id == user_id:
                 return user
+
+    def get_by_username(self, username: str):
+        logger.info(f"Searching for user by username {username}")
+
+        for user in self.users:
+            if user.username == username:
+                return user
+            
+            
+    def get_by_email(self, email: str):
+        logger.info(f"Searching for user by email {email}")
+
+        for user in self.users:
+            if user.email == email:
+                return user

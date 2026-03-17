@@ -1,9 +1,14 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 from domena.user import User
-from aplikacija.user_service import create_user, get_users, get_user
+from aplikacija.user_service import create_user, get_users, get_user, register, login
 from infrastruktura.logging_config import logger
 
 router = APIRouter()
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
 
 @router.post("/users")
 def create(user: User):
@@ -19,3 +24,19 @@ def list_users():
 def get(user_id: int):
     logger.info(f"Fetching user {user_id}")
     return get_user(user_id)
+
+@router.post("/auth/register")
+def register_user(user: User):
+    logger.info(f"Register request for {user.username}")
+    created, error = register(user)
+    if error:
+        raise HTTPException(status_code=400, detail=error)
+    return created
+
+@router.post("/auth/login")
+def login_user(request: LoginRequest):
+    logger.info(f"Login request for {request.username}")
+    user, error = login(request.username, request.password)
+    if error:
+        raise HTTPException(status_code=401, detail=error)
+    return {"message": "Login successful", "user_id": user.id, "username": user.username}

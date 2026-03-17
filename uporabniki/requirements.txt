@@ -4,3 +4,5 @@ sqlalchemy
 pydantic
 pytest
 httpx
+bcrypt
+python-jose[cryptography]
