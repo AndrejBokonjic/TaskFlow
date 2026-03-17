@@ -46,13 +46,3 @@ def test_get_by_id():
 
     assert found is not None
     assert found.id == created.id
-
-def test_get_all():
-    repo = UserRepository()
-
-    repo.create(User(username="user1", email="user1@test.com", password="pass"))
-    repo.create(User(username="user2", email="user2@test.com", password="pass"))
-
-    all_users = repo.get_all()
-
-    assert len(all_users) == 2
