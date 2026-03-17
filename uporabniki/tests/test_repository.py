@@ -28,7 +28,7 @@ def override_db():
 def test_create_user():
     repo = UserRepository()
 
-    user = User(username="test123", email="test123@test.com", password="test123test")
+    user = User(username="test444", email="test4sd@test.com", password="testgedrtest")
 
     created = repo.create(user)
 
