@@ -1,9 +1,11 @@
 from infrastruktura.user_repository import UserRepository
 from domena.user import User
+from infrastruktura.logging_config import logger
 
 repo = UserRepository()
 
 def create_user(user: User):
+    logger.info(f"Service layer: creating user {user.username}")
     return repo.create(user)
 
 def get_users():
