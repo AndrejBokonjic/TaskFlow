@@ -29,9 +29,9 @@ client = TestClient(app)
 
 def test_create_user():
     response = client.post("/users", json={
-        "username": "test12",
-        "email": "test12@test.com",
-        "password": "test12test"
+        "username": "test123",
+        "email": "test123@test.com",
+        "password": "test123test"
     })
 
     assert response.status_code == 200

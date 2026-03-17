@@ -20,9 +20,6 @@ def register(user: User):
     if existing:
         return None, "Username already taken"
     
-    existing_email = repo.get_by_email(user.email)
-    if existing_email:
-        return None, "Email already taken"
 
     created = repo.create(user)
     return created, None
