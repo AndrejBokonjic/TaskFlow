@@ -1,5 +1,5 @@
 import sqlite3
-from naloge.domena.task import Task
+from naloge.domena.tasks import Task
 
 class TaskRepository:
 

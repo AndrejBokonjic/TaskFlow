@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from api.user_controller import router
-from infrastruktura.logging_config import logger
-from infrastruktura.database import engine, Base
-import infrastruktura.user_model
+from uporabniki.infrastruktura.logging_config import logger
+from uporabniki.infrastruktura.database import engine, Base
+import uporabniki.infrastruktura.user_model
 
 app = FastAPI(title="User Service")
 
