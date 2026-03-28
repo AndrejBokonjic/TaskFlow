@@ -34,7 +34,7 @@ jobs:
 
       - name: Install deps
         run: |
-          pip install pytest grpcio grpcio-tools sqlalchemy
+          pip install pytest grpcio grpcio-tools sqlalchemy uvicorn fastapi pydantic
 
       - name: Run task tests
         run: pytest
