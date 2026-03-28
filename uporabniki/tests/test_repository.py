@@ -19,7 +19,7 @@ def setup_db():
 
 @pytest.fixture(autouse=True)
 def override_db():
-    import infrastruktura.database as db_module
+    import uporabniki.infrastruktura.database as db_module
     original = db_module.SessionLocal
     db_module.SessionLocal = TestingSessionLocal
     yield
