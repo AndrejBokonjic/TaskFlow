@@ -1,0 +1,8 @@
+pytest
+grpcio
+grpcio-tools
+sqlalchemy
+uvicorn
+fastapi
+pydantic
+httpx
