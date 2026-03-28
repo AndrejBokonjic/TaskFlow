@@ -1,9 +1,11 @@
-FROM python:3.11
+FROM python:3.11-slim
 
 WORKDIR /app
 
 COPY . .
 
-RUN pip install grpcio grpcio-tools
+RUN pip install flask grpcio grpcio-tools
 
-CMD ["python", "grpc/task_server.py"]
+EXPOSE 5001 50052
+
+CMD ["sh", "-c", "python -m naloge.grpc.task_server & python -m naloge.main"]

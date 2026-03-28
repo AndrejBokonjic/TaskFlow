@@ -23,18 +23,12 @@ jobs:
     
   test-task:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
-          python-version: 3.11
-
-      - name: Install deps
-        run: |
-          pip install -r naloge/requirements.txt
-
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install flask grpcio grpcio-tools pytest
       - name: Run task tests
-        run: pytest
+        run: pytest naloge/tests/
