@@ -2,8 +2,8 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from infrastruktura.database import Base
-from infrastruktura import user_model
+from uporabniki.infrastruktura.database import Base
+from uporabniki.infrastruktura import user_model
 from main import app
 
 TEST_DATABASE_URL = "sqlite:///:memory:"
