@@ -1,5 +1,5 @@
-from aplikacija.task_service import TaskService
-from infrastruktura.task_repository import TaskRepository
+from naloge.aplikacija.task_service import TaskService
+from naloge.infrastruktura.task_repository import TaskRepository
 
 def test_create_task():
     service = TaskService(TaskRepository())

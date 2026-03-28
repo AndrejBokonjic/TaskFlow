@@ -3,8 +3,8 @@ from concurrent import futures
 import task_pb2
 import task_pb2_grpc
 
-from aplikacija.task_service import TaskService
-from infrastruktura.task_repository import TaskRepository
+from naloge.aplikacija.task_service import TaskService
+from naloge.infrastruktura.task_repository import TaskRepository
 
 
 class TaskServiceServicer(task_pb2_grpc.TaskServiceServicer):

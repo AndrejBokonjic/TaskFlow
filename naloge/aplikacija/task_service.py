@@ -1,4 +1,4 @@
-from domena.task import Task
+from naloge.domena.task import Task
 
 class TaskService:
 
