@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from infrastruktura.database import Base
+from uporabniki.infrastruktura.database import Base
 from infrastruktura import user_model
 from infrastruktura.user_repository import UserRepository
 from domena.user import User
