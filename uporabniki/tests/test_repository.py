@@ -2,9 +2,9 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from uporabniki.infrastruktura.database import Base
-from infrastruktura import user_model
-from infrastruktura.user_repository import UserRepository
-from domena.user import User
+from uporabniki.infrastruktura import user_model
+from uporabniki.infrastruktura.user_repository import UserRepository
+from uporabniki.domena.user import User
 
 TEST_DATABASE_URL = "sqlite:///:memory:"
 
