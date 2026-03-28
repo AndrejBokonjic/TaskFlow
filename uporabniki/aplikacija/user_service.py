@@ -1,6 +1,6 @@
-from infrastruktura.user_repository import UserRepository
-from domena.user import User
-from infrastruktura.logging_config import logger
+from uporabniki.infrastruktura.user_repository import UserRepository
+from uporabniki.domena.user import User
+from uporabniki.infrastruktura.logging_config import logger
 
 repo = UserRepository()
 

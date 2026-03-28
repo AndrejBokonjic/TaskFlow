@@ -1,7 +1,7 @@
-from infrastruktura.database import SessionLocal
-from infrastruktura.user_model import UserModel
-from domena.user import User
-from infrastruktura.logging_config import logger
+from uporabniki.infrastruktura.database import SessionLocal
+from uporabniki.infrastruktura.user_model import UserModel
+from uporabniki.domena.user import User
+from uporabniki.infrastruktura.logging_config import logger
 
 class UserRepository:
 

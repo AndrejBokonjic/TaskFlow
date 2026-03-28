@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from domena.user import User
-from aplikacija.user_service import create_user, get_users, get_user, register, login
-from infrastruktura.logging_config import logger
+from uporabniki.domena.user import User
+from uporabniki.aplikacija.user_service import create_user, get_users, get_user, register, login
+from uporabniki.infrastruktura.logging_config import logger
 
 router = APIRouter()
 

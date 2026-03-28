@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from uporabniki.infrastruktura.database import Base
 from uporabniki.infrastruktura import user_model
-from main import app
+from uporabniki.main import app
 
 TEST_DATABASE_URL = "sqlite:///:memory:"
 
