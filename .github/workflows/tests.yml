@@ -2,7 +2,7 @@ name: Tests
 on: [push]
 
 jobs:
-  test:
+  test-user:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +16,25 @@ jobs:
       - name: Install dependencies
         run: pip install -r uporabniki/requirements.txt
 
-      - name: Run tests
+      - name: Run user tests
         run: pytest uporabniki/tests
         env:
           PYTHONPATH: uporabniki
+    
+  test-task:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install deps
+        run: |
+          pip install pytest grpcio grpcio-tools
+
+      - name: Run task tests
+        run: pytest
