@@ -34,7 +34,7 @@ jobs:
 
       - name: Install deps
         run: |
-          pip install pytest grpcio grpcio-tools
+          pip install pytest grpcio grpcio-tools sqlalchemy
 
       - name: Run task tests
         run: pytest
