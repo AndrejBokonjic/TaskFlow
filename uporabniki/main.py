@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api.user_controller import router
+from uporabniki.api.user_controller import router
 from uporabniki.infrastruktura.logging_config import logger
 from uporabniki.infrastruktura.database import engine, Base
 import uporabniki.infrastruktura.user_model
