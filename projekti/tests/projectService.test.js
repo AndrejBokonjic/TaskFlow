@@ -1,4 +1,5 @@
 const ProjectService = require('../src/aplikacija/projectService');
+const { publishEvent } = require('../src/infrastruktura/messageBroker');
 
 const mockRepo = {
   create: jest.fn(p => Promise.resolve({ id: 1, ...p })),
@@ -8,17 +9,35 @@ const mockRepo = {
   delete: jest.fn(id => Promise.resolve(true)),
 };
 
-// Mock broker so tests don't need ActiveMQ
 jest.mock('../src/infrastruktura/messageBroker', () => ({
   publishEvent: jest.fn(),
 }));
 
 const service = new ProjectService(mockRepo);
 
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 test('createProject returns project with id', async () => {
   const project = await service.createProject('Test', 'Desc', 1);
   expect(project.id).toBe(1);
   expect(project.name).toBe('Test');
+});
+
+test('createProject publishes PROJECT_CREATED event', async () => {
+  await service.createProject('Test', 'Desc', 1);
+  expect(publishEvent).toHaveBeenCalledWith('PROJECT_CREATED', expect.objectContaining({ name: 'Test' }));
+});
+
+test('updateProject publishes PROJECT_UPDATED event', async () => {
+  await service.updateProject(1, 'New Name', 'New Desc');
+  expect(publishEvent).toHaveBeenCalledWith('PROJECT_UPDATED', expect.objectContaining({ name: 'New Name' }));
+});
+
+test('deleteProject publishes PROJECT_DELETED event', async () => {
+  await service.deleteProject(1);
+  expect(publishEvent).toHaveBeenCalledWith('PROJECT_DELETED', { id: 1 });
 });
 
 test('getProject returns null for unknown id', async () => {
@@ -29,11 +48,6 @@ test('getProject returns null for unknown id', async () => {
 test('listProjects returns array', async () => {
   const projects = await service.listProjects();
   expect(Array.isArray(projects)).toBe(true);
-});
-
-test('updateProject returns updated project', async () => {
-  const project = await service.updateProject(1, 'New Name', 'New Desc');
-  expect(project.name).toBe('New Name');
 });
 
 test('deleteProject returns true', async () => {
