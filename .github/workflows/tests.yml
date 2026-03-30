@@ -7,7 +7,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -32,3 +31,17 @@ jobs:
         run: pip install flask grpcio grpcio-tools pytest
       - name: Run task tests
         run: pytest naloge/tests/
+
+  test-projekti:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        working-directory: projekti
+        run: npm install
+      - name: Run projekti tests
+        working-directory: projekti
+        run: npm test

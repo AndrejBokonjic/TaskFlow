@@ -1,0 +1,88 @@
+openapi: 3.0.0
+info:
+  title: Projekti API
+  version: 1.0.0
+paths:
+  /projects:
+    get:
+      summary: List all projects
+      responses:
+        '200':
+          description: List of projects
+    post:
+      summary: Create a project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                owner_id:
+                  type: integer
+      responses:
+        '201':
+          description: Created
+  /projects/{id}:
+    get:
+      summary: Get a project
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Project found
+        '404':
+          description: Not found
+    put:
+      summary: Update a project
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: Updated
+    delete:
+      summary: Delete a project
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deleted
+  /projects/{id}/tasks:
+    get:
+      summary: Get tasks for a project (fetched from naloge service)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of tasks
