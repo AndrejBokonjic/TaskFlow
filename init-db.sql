@@ -1,0 +1,2 @@
+CREATE DATABASE uporabniki;
+CREATE DATABASE projekti;
