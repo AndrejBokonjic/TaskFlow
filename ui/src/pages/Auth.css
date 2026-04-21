@@ -1,0 +1,94 @@
+.auth-bg {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f3;
+}
+
+.auth-card {
+  background: #fff;
+  border: 0.5px solid #d3d1c7;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 380px;
+}
+
+.auth-logo {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0 0 1.5rem;
+  color: #2c2c2a;
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  border: 0.5px solid #d3d1c7;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.auth-tabs button {
+  flex: 1;
+  padding: 8px;
+  font-size: 13px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #888780;
+}
+
+.auth-tabs button.active {
+  background: #2c2c2a;
+  color: #fff;
+}
+
+form label {
+  display: block;
+  font-size: 12px;
+  color: #5f5e5a;
+  margin: 12px 0 4px;
+}
+
+form input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 0.5px solid #d3d1c7;
+  border-radius: 8px;
+  background: #fff;
+  color: #2c2c2a;
+  outline: none;
+}
+
+form input:focus {
+  border-color: #888780;
+}
+
+.auth-error {
+  font-size: 12px;
+  color: #a32d2d;
+  margin: 8px 0 0;
+}
+
+.btn-primary {
+  width: 100%;
+  margin-top: 1.25rem;
+  padding: 9px;
+  font-size: 14px;
+  font-weight: 500;
+  background: #2c2c2a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

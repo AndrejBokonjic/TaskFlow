@@ -24,27 +24,41 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ntask.proto\x12\x04task\"Z\n\x04Task\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x0f\n\x07user_id\x18\x04 \x01(\x05\x12\x11\n\tcompleted\x18\x05 \x01(\x08\"H\n\x11\x43reateTaskRequest\x12\r\n\x05title\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\x05\"\x1c\n\x0eGetTaskRequest\x12\n\n\x02id\x18\x01 \x01(\x05\"!\n\x13\x43ompleteTaskRequest\x12\n\n\x02id\x18\x01 \x01(\x05\"(\n\x0cTaskResponse\x12\x18\n\x04task\x18\x01 \x01(\x0b\x32\n.task.Task\"%\n\x08TaskList\x12\x19\n\x05tasks\x18\x01 \x03(\x0b\x32\n.task.Task\"\x07\n\x05\x45mpty2\xe6\x01\n\x0bTaskService\x12\x39\n\nCreateTask\x12\x17.task.CreateTaskRequest\x1a\x12.task.TaskResponse\x12\x33\n\x07GetTask\x12\x14.task.GetTaskRequest\x1a\x12.task.TaskResponse\x12(\n\tListTasks\x12\x0b.task.Empty\x1a\x0e.task.TaskList\x12=\n\x0c\x43ompleteTask\x12\x19.task.CompleteTaskRequest\x1a\x12.task.TaskResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ntask.proto\x12\x04task\"\x90\x01\n\x04Task\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x0f\n\x07user_id\x18\x04 \x01(\x05\x12\x11\n\tcompleted\x18\x05 \x01(\x08\x12\x12\n\nproject_id\x18\x06 \x01(\x05\x12 \n\x06status\x18\x07 \x01(\x0e\x32\x10.task.TaskStatus\"\\\n\x11\x43reateTaskRequest\x12\r\n\x05title\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\x05\x12\x12\n\nproject_id\x18\x04 \x01(\x05\"\x1c\n\x0eGetTaskRequest\x12\n\n\x02id\x18\x01 \x01(\x05\"*\n\x14ListByProjectRequest\x12\x12\n\nproject_id\x18\x01 \x01(\x05\"$\n\x11ListByUserRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\"h\n\x11UpdateTaskRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x0f\n\x07user_id\x18\x04 \x01(\x05\x12\x12\n\nproject_id\x18\x05 \x01(\x05\"@\n\x10SetStatusRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12 \n\x06status\x18\x02 \x01(\x0e\x32\x10.task.TaskStatus\"!\n\x13\x43ompleteTaskRequest\x12\n\n\x02id\x18\x01 \x01(\x05\"\x1f\n\x11\x44\x65leteTaskRequest\x12\n\n\x02id\x18\x01 \x01(\x05\"%\n\x12\x44\x65leteTaskResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\"(\n\x0cTaskResponse\x12\x18\n\x04task\x18\x01 \x01(\x0b\x32\n.task.Task\"%\n\x08TaskList\x12\x19\n\x05tasks\x18\x01 \x03(\x0b\x32\n.task.Task\"\x07\n\x05\x45mpty*1\n\nTaskStatus\x12\x08\n\x04TODO\x10\x00\x12\x0f\n\x0bIN_PROGRESS\x10\x01\x12\x08\n\x04\x44ONE\x10\x02\x32\x9d\x04\n\x0bTaskService\x12\x39\n\nCreateTask\x12\x17.task.CreateTaskRequest\x1a\x12.task.TaskResponse\x12\x33\n\x07GetTask\x12\x14.task.GetTaskRequest\x1a\x12.task.TaskResponse\x12(\n\tListTasks\x12\x0b.task.Empty\x1a\x0e.task.TaskList\x12@\n\x12ListTasksByProject\x12\x1a.task.ListByProjectRequest\x1a\x0e.task.TaskList\x12:\n\x0fListTasksByUser\x12\x17.task.ListByUserRequest\x1a\x0e.task.TaskList\x12\x39\n\nUpdateTask\x12\x17.task.UpdateTaskRequest\x1a\x12.task.TaskResponse\x12;\n\rSetTaskStatus\x12\x16.task.SetStatusRequest\x1a\x12.task.TaskResponse\x12=\n\x0c\x43ompleteTask\x12\x19.task.CompleteTaskRequest\x1a\x12.task.TaskResponse\x12?\n\nDeleteTask\x12\x17.task.DeleteTaskRequest\x1a\x18.task.DeleteTaskResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'task_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_TASK']._serialized_start=20
-  _globals['_TASK']._serialized_end=110
-  _globals['_CREATETASKREQUEST']._serialized_start=112
-  _globals['_CREATETASKREQUEST']._serialized_end=184
-  _globals['_GETTASKREQUEST']._serialized_start=186
-  _globals['_GETTASKREQUEST']._serialized_end=214
-  _globals['_COMPLETETASKREQUEST']._serialized_start=216
-  _globals['_COMPLETETASKREQUEST']._serialized_end=249
-  _globals['_TASKRESPONSE']._serialized_start=251
-  _globals['_TASKRESPONSE']._serialized_end=291
-  _globals['_TASKLIST']._serialized_start=293
-  _globals['_TASKLIST']._serialized_end=330
-  _globals['_EMPTY']._serialized_start=332
-  _globals['_EMPTY']._serialized_end=339
-  _globals['_TASKSERVICE']._serialized_start=342
-  _globals['_TASKSERVICE']._serialized_end=572
+  _globals['_TASKSTATUS']._serialized_start=742
+  _globals['_TASKSTATUS']._serialized_end=791
+  _globals['_TASK']._serialized_start=21
+  _globals['_TASK']._serialized_end=165
+  _globals['_CREATETASKREQUEST']._serialized_start=167
+  _globals['_CREATETASKREQUEST']._serialized_end=259
+  _globals['_GETTASKREQUEST']._serialized_start=261
+  _globals['_GETTASKREQUEST']._serialized_end=289
+  _globals['_LISTBYPROJECTREQUEST']._serialized_start=291
+  _globals['_LISTBYPROJECTREQUEST']._serialized_end=333
+  _globals['_LISTBYUSERREQUEST']._serialized_start=335
+  _globals['_LISTBYUSERREQUEST']._serialized_end=371
+  _globals['_UPDATETASKREQUEST']._serialized_start=373
+  _globals['_UPDATETASKREQUEST']._serialized_end=477
+  _globals['_SETSTATUSREQUEST']._serialized_start=479
+  _globals['_SETSTATUSREQUEST']._serialized_end=543
+  _globals['_COMPLETETASKREQUEST']._serialized_start=545
+  _globals['_COMPLETETASKREQUEST']._serialized_end=578
+  _globals['_DELETETASKREQUEST']._serialized_start=580
+  _globals['_DELETETASKREQUEST']._serialized_end=611
+  _globals['_DELETETASKRESPONSE']._serialized_start=613
+  _globals['_DELETETASKRESPONSE']._serialized_end=650
+  _globals['_TASKRESPONSE']._serialized_start=652
+  _globals['_TASKRESPONSE']._serialized_end=692
+  _globals['_TASKLIST']._serialized_start=694
+  _globals['_TASKLIST']._serialized_end=731
+  _globals['_EMPTY']._serialized_start=733
+  _globals['_EMPTY']._serialized_end=740
+  _globals['_TASKSERVICE']._serialized_start=794
+  _globals['_TASKSERVICE']._serialized_end=1335
 # @@protoc_insertion_point(module_scope)

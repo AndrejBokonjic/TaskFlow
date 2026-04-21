@@ -27,7 +27,10 @@ const getProject = async (req, res) => {
 
 const listProjects = async (req, res) => {
   try {
-    const projects = await service.listProjects();
+    const { user_id } = req.query;
+    const projects = user_id
+      ? await service.listProjectsByMember(user_id)
+      : await service.listProjects();
     res.json(projects);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -64,4 +67,26 @@ const getProjectTasks = async (req, res) => {
   }
 };
 
-module.exports = { createProject, getProject, listProjects, updateProject, deleteProject, getProjectTasks };
+const addMember = async (req, res) => {
+  try {
+    const { user_id, role } = req.body;
+    if (!user_id) return res.status(400).json({ error: 'user_id required' });
+    const project = await service.addMember(req.params.id, user_id, role || 'member');
+    if (!project) return res.status(404).json({ error: 'Project or user not found' });
+    res.json(project);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const removeMember = async (req, res) => {
+  try {
+    const removed = await service.removeMember(req.params.id, req.params.userId);
+    if (!removed) return res.status(404).json({ error: 'Member not found' });
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = { createProject, getProject, listProjects, updateProject, deleteProject, getProjectTasks, addMember, removeMember };

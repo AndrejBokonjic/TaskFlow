@@ -3,6 +3,7 @@ const logger = require('../logger');
 const axios = require('axios');
 
 const NALOGE_URL = process.env.NALOGE_URL || 'http://localhost:5001';
+const UPORABNIKI_URL = process.env.UPORABNIKI_URL || 'http://localhost:8000';
 
 class ProjectService {
   constructor(repo) {
@@ -23,15 +24,16 @@ class ProjectService {
   }
 
   async listProjects() {
-    const projects = await this.repo.getAll();
-    logger.info(`Listed ${projects.length} projects`);
-    return projects;
+    return this.repo.getAll();
+  }
+
+  async listProjectsByMember(userId) {
+    return this.repo.getByMember(userId);
   }
 
   async updateProject(id, name, description) {
     const project = await this.repo.update(id, name, description);
     if (project) {
-      logger.info(`Project updated: ${id}`);
       publishEvent('PROJECT_UPDATED', project);
     }
     return project;
@@ -40,20 +42,40 @@ class ProjectService {
   async deleteProject(id) {
     const deleted = await this.repo.delete(id);
     if (deleted) {
-      logger.info(`Project deleted: ${id}`);
       publishEvent('PROJECT_DELETED', { id });
     }
     return deleted;
   }
 
+  async addMember(projectId, userId, role = 'member') {
+    const project = await this.repo.getById(projectId);
+    if (!project) return null;
+    try {
+      await axios.get(`${UPORABNIKI_URL}/users/${userId}`);
+    } catch {
+      logger.warn(`User ${userId} not found in uporabniki service`);
+      return null;
+    }
+    await this.repo.addMember(projectId, userId, role);
+    logger.info(`Added user ${userId} to project ${projectId} as ${role}`);
+    publishEvent('PROJECT_MEMBER_ADDED', { projectId, userId, role });
+    return this.repo.getById(projectId);
+  }
+
+  async removeMember(projectId, userId) {
+    const removed = await this.repo.removeMember(projectId, userId);
+    if (removed) {
+      publishEvent('PROJECT_MEMBER_REMOVED', { projectId, userId });
+    }
+    return removed;
+  }
+
   async getProjectTasks(projectId) {
     try {
-      const response = await axios.get(`${NALOGE_URL}/tasks`);
-      const tasks = response.data.filter(t => t.project_id === parseInt(projectId));
-      logger.info(`Fetched tasks for project ${projectId}`);
-      return tasks;
+      const response = await axios.get(`${NALOGE_URL}/tasks?project_id=${projectId}`);
+      return response.data;
     } catch (err) {
-      logger.error(`Failed to fetch tasks from naloge: ${err.message}`);
+      logger.error(`Failed to fetch tasks: ${err.message}`);
       return [];
     }
   }

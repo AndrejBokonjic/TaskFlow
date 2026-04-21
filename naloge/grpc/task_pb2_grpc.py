@@ -5,7 +5,7 @@ import warnings
 
 from naloge.grpc import task_pb2 as task__pb2
 
-GRPC_GENERATED_VERSION = '1.78.0'
+GRPC_GENERATED_VERSION = '1.80.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -49,10 +49,35 @@ class TaskServiceStub(object):
                 request_serializer=task__pb2.Empty.SerializeToString,
                 response_deserializer=task__pb2.TaskList.FromString,
                 _registered_method=True)
+        self.ListTasksByProject = channel.unary_unary(
+                '/task.TaskService/ListTasksByProject',
+                request_serializer=task__pb2.ListByProjectRequest.SerializeToString,
+                response_deserializer=task__pb2.TaskList.FromString,
+                _registered_method=True)
+        self.ListTasksByUser = channel.unary_unary(
+                '/task.TaskService/ListTasksByUser',
+                request_serializer=task__pb2.ListByUserRequest.SerializeToString,
+                response_deserializer=task__pb2.TaskList.FromString,
+                _registered_method=True)
+        self.UpdateTask = channel.unary_unary(
+                '/task.TaskService/UpdateTask',
+                request_serializer=task__pb2.UpdateTaskRequest.SerializeToString,
+                response_deserializer=task__pb2.TaskResponse.FromString,
+                _registered_method=True)
+        self.SetTaskStatus = channel.unary_unary(
+                '/task.TaskService/SetTaskStatus',
+                request_serializer=task__pb2.SetStatusRequest.SerializeToString,
+                response_deserializer=task__pb2.TaskResponse.FromString,
+                _registered_method=True)
         self.CompleteTask = channel.unary_unary(
                 '/task.TaskService/CompleteTask',
                 request_serializer=task__pb2.CompleteTaskRequest.SerializeToString,
                 response_deserializer=task__pb2.TaskResponse.FromString,
+                _registered_method=True)
+        self.DeleteTask = channel.unary_unary(
+                '/task.TaskService/DeleteTask',
+                request_serializer=task__pb2.DeleteTaskRequest.SerializeToString,
+                response_deserializer=task__pb2.DeleteTaskResponse.FromString,
                 _registered_method=True)
 
 
@@ -77,7 +102,37 @@ class TaskServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ListTasksByProject(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListTasksByUser(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateTask(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SetTaskStatus(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def CompleteTask(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteTask(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -101,10 +156,35 @@ def add_TaskServiceServicer_to_server(servicer, server):
                     request_deserializer=task__pb2.Empty.FromString,
                     response_serializer=task__pb2.TaskList.SerializeToString,
             ),
+            'ListTasksByProject': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListTasksByProject,
+                    request_deserializer=task__pb2.ListByProjectRequest.FromString,
+                    response_serializer=task__pb2.TaskList.SerializeToString,
+            ),
+            'ListTasksByUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListTasksByUser,
+                    request_deserializer=task__pb2.ListByUserRequest.FromString,
+                    response_serializer=task__pb2.TaskList.SerializeToString,
+            ),
+            'UpdateTask': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateTask,
+                    request_deserializer=task__pb2.UpdateTaskRequest.FromString,
+                    response_serializer=task__pb2.TaskResponse.SerializeToString,
+            ),
+            'SetTaskStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetTaskStatus,
+                    request_deserializer=task__pb2.SetStatusRequest.FromString,
+                    response_serializer=task__pb2.TaskResponse.SerializeToString,
+            ),
             'CompleteTask': grpc.unary_unary_rpc_method_handler(
                     servicer.CompleteTask,
                     request_deserializer=task__pb2.CompleteTaskRequest.FromString,
                     response_serializer=task__pb2.TaskResponse.SerializeToString,
+            ),
+            'DeleteTask': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteTask,
+                    request_deserializer=task__pb2.DeleteTaskRequest.FromString,
+                    response_serializer=task__pb2.DeleteTaskResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -199,6 +279,114 @@ class TaskService(object):
             _registered_method=True)
 
     @staticmethod
+    def ListTasksByProject(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/task.TaskService/ListTasksByProject',
+            task__pb2.ListByProjectRequest.SerializeToString,
+            task__pb2.TaskList.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListTasksByUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/task.TaskService/ListTasksByUser',
+            task__pb2.ListByUserRequest.SerializeToString,
+            task__pb2.TaskList.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateTask(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/task.TaskService/UpdateTask',
+            task__pb2.UpdateTaskRequest.SerializeToString,
+            task__pb2.TaskResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SetTaskStatus(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/task.TaskService/SetTaskStatus',
+            task__pb2.SetStatusRequest.SerializeToString,
+            task__pb2.TaskResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def CompleteTask(request,
             target,
             options=(),
@@ -215,6 +403,33 @@ class TaskService(object):
             '/task.TaskService/CompleteTask',
             task__pb2.CompleteTaskRequest.SerializeToString,
             task__pb2.TaskResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteTask(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/task.TaskService/DeleteTask',
+            task__pb2.DeleteTaskRequest.SerializeToString,
+            task__pb2.DeleteTaskResponse.FromString,
             options,
             channel_credentials,
             insecure,

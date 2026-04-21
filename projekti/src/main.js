@@ -5,6 +5,7 @@ const { initDb } = require('./infrastruktura/database');
 const { connectBroker, projectEvents$ } = require('./infrastruktura/messageBroker');
 const routes = require('./api/routes');
 const logger = require('./logger');
+require('dotenv').config();
 
 const app = express();
 app.use(express.json());
