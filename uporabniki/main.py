@@ -8,8 +8,6 @@ app = FastAPI(title="User Service")
 
 logger.info("User Service starting...")
 
-@app.on_event("startup")
-def startup():
-    Base.metadata.create_all(bind=db_module.engine)
+Base.metadata.create_all(bind=engine)
 
 app.include_router(router)
