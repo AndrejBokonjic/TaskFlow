@@ -1,73 +1,75 @@
-from uporabniki.infrastruktura.database import SessionLocal
+import uporabniki.infrastruktura.database as db_module
 from uporabniki.infrastruktura.user_model import UserModel
 from uporabniki.domena.user import User
 from uporabniki.infrastruktura.logging_config import logger
+from sqlalchemy.orm import Session
+
 
 class UserRepository:
 
+    def __init__(self, db: Session | None = None):
+        # omogoča dependency injection (testi, FastAPI)
+        self.db = db or db_module.SessionLocal()
+
+    # helper za mapiranje
+    def _to_domain(self, u: UserModel) -> User:
+        return User(
+            id=u.id,
+            username=u.username,
+            email=u.email,
+            password=u.password
+        )
+
     def create(self, user: User):
         logger.info("Saving user to repository")
-        db = SessionLocal()
-        try:
-            db_user = UserModel(username=user.username, email=user.email, password=user.password)
-            db.add(db_user)
-            db.commit()
-            db.refresh(db_user)
-            return User(id=db_user.id, username=db_user.username, email=db_user.email, password=db_user.password)
-        finally:
-            db.close()
+        db_user = UserModel(
+            username=user.username,
+            email=user.email,
+            password=user.password
+        )
+        self.db.add(db_user)
+        self.db.commit()
+        self.db.refresh(db_user)
+        return self._to_domain(db_user)
 
     def get_all(self):
-        db = SessionLocal()
-        try:
-            users = db.query(UserModel).all()
-            return [User(id=u.id, username=u.username, email=u.email, password=u.password) for u in users]
-        finally:
-            db.close()
+        users = self.db.query(UserModel).all()
+        return [self._to_domain(u) for u in users]
 
     def get_by_id(self, user_id: int):
-        db = SessionLocal()
-        try:
-            u = db.query(UserModel).filter(UserModel.id == user_id).first()
-            if u:
-                return User(id=u.id, username=u.username, email=u.email, password=u.password)
-        finally:
-            db.close()
+        u = self.db.query(UserModel).filter(UserModel.id == user_id).first()
+        return self._to_domain(u) if u else None
 
     def get_by_username(self, username: str):
-        db = SessionLocal()
-        try:
-            u = db.query(UserModel).filter(UserModel.username == username).first()
-            if u:
-                return User(id=u.id, username=u.username, email=u.email, password=u.password)
-        finally:
-            db.close()
+        u = self.db.query(UserModel).filter(UserModel.username == username).first()
+        return self._to_domain(u) if u else None
 
     def update(self, user: User):
         logger.info(f"Updating user {user.id}")
-        db = SessionLocal()
-        try:
-            u = db.query(UserModel).filter(UserModel.id == user.id).first()
-            if not u:
-                return None
-            u.username = user.username
-            u.email = user.email
-            u.password = user.password
-            db.commit()
-            db.refresh(u)
-            return User(id=u.id, username=u.username, email=u.email, password=u.password)
-        finally:
-            db.close()
+        u = self.db.query(UserModel).filter(UserModel.id == user.id).first()
+
+        if not u:
+            return None
+
+        u.username = user.username
+        u.email = user.email
+        u.password = user.password
+
+        self.db.commit()
+        self.db.refresh(u)
+
+        return self._to_domain(u)
 
     def delete(self, user_id: int):
         logger.info(f"Deleting user {user_id}")
-        db = SessionLocal()
-        try:
-            u = db.query(UserModel).filter(UserModel.id == user_id).first()
-            if not u:
-                return False
-            db.delete(u)
-            db.commit()
-            return True
-        finally:
-            db.close()
+        u = self.db.query(UserModel).filter(UserModel.id == user_id).first()
+
+        if not u:
+            return False
+
+        self.db.delete(u)
+        self.db.commit()
+        return True
+
+    def close(self):
+        self.db.close()

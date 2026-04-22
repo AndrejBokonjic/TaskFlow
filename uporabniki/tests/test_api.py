@@ -2,26 +2,29 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import uporabniki.infrastruktura.database as db_module
 from uporabniki.infrastruktura.database import Base
 from uporabniki.infrastruktura import user_model
-import uporabniki.infrastruktura.database as db_module
-
-TEST_DATABASE_URL = "sqlite://"
 
 @pytest.fixture(autouse=True)
-def isolated_db():
-    engine = create_engine(TEST_DATABASE_URL, connect_args={"check_same_thread": False})
+def isolated_db(tmp_path):
+    db_file = tmp_path / "test.db"
+    url = f"sqlite:///{db_file}"
+    engine = create_engine(url, connect_args={"check_same_thread": False})
     TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     Base.metadata.create_all(bind=engine)
-    original = db_module.SessionLocal
+    original_session = db_module.SessionLocal
+    original_engine = db_module.engine
     db_module.SessionLocal = TestingSessionLocal
+    db_module.engine = engine
     yield
-    db_module.SessionLocal = original
+    db_module.SessionLocal = original_session
+    db_module.engine = original_engine
     Base.metadata.drop_all(bind=engine)
     engine.dispose()
 
 @pytest.fixture
-def client():
+def client(isolated_db):
     from uporabniki.main import app
     return TestClient(app)
 
