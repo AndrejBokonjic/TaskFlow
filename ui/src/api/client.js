@@ -1,58 +1,60 @@
-const USERS_URL = process.env.REACT_APP_USERS_URL || 'http://localhost:8000';
-const PROJECTS_URL = process.env.REACT_APP_PROJECTS_URL || 'http://localhost:3000';
-const TASKS_URL = process.env.REACT_APP_TASKS_URL || 'http://localhost:5001';
+// ui/src/api/client.js
+// POPRAVEK: VSI klici gredo skozi web-BFF (port 4000), ne direktno na mikroservise.
+// To je pravilna arhitektura - UI ne sme poznati notranjih URL-ov mikroservisov.
 
-async function req(url, options = {}) {
-  const res = await fetch(url, {
+const BFF_URL = process.env.REACT_APP_BFF_URL || 'http://localhost:4000';
+
+async function req(path, options = {}) {
+  const res = await fetch(`${BFF_URL}${path}`, {
     headers: { 'Content-Type': 'application/json' },
     ...options,
   });
   if (!res.ok) {
-    const err = await res.json().catch(() => ({ detail: res.statusText }));
+    const err = await res.json().catch(() => ({ error: res.statusText }));
     throw new Error(err.detail || err.error || 'Request failed');
   }
   if (res.status === 204) return null;
   return res.json();
 }
 
-// Auth
+// Auth - gre na /api/auth/* -> BFF -> uporabniki:8000
 export const register = (username, email, password) =>
-  req(`${USERS_URL}/auth/register`, { method: 'POST', body: JSON.stringify({ username, email, password }) });
+  req('/api/auth/register', { method: 'POST', body: JSON.stringify({ username, email, password }) });
 
 export const login = (username, password) =>
-  req(`${USERS_URL}/auth/login`, { method: 'POST', body: JSON.stringify({ username, password }) });
+  req('/api/auth/login', { method: 'POST', body: JSON.stringify({ username, password }) });
 
-// Users
-export const getUsers = () => req(`${USERS_URL}/users`);
-export const getUser = (id) => req(`${USERS_URL}/users/${id}`);
+// Users - gre na /api/users/* -> BFF -> uporabniki:8000
+export const getUsers = () => req('/api/users');
+export const getUser = (id) => req(`/api/users/${id}`);
 export const updateUser = (id, data) =>
-  req(`${USERS_URL}/users/${id}`, { method: 'PUT', body: JSON.stringify(data) });
+  req(`/api/users/${id}`, { method: 'PUT', body: JSON.stringify(data) });
 export const deleteUser = (id) =>
-  req(`${USERS_URL}/users/${id}`, { method: 'DELETE' });
+  req(`/api/users/${id}`, { method: 'DELETE' });
 
-// Projects
-export const getProjects = () => req(`${PROJECTS_URL}/projects`);
-export const getProject = (id) => req(`${PROJECTS_URL}/projects/${id}`);
+// Projects - gre na /api/projects/* -> BFF -> projekti:3000
+export const getProjects = () => req('/api/projects');
+export const getProject = (id) => req(`/api/projects/${id}`);
 export const createProject = (name, description, owner_id) =>
-  req(`${PROJECTS_URL}/projects`, { method: 'POST', body: JSON.stringify({ name, description, owner_id }) });
+  req('/api/projects', { method: 'POST', body: JSON.stringify({ name, description, owner_id }) });
 export const updateProject = (id, name, description) =>
-  req(`${PROJECTS_URL}/projects/${id}`, { method: 'PUT', body: JSON.stringify({ name, description }) });
+  req(`/api/projects/${id}`, { method: 'PUT', body: JSON.stringify({ name, description }) });
 export const deleteProject = (id) =>
-  req(`${PROJECTS_URL}/projects/${id}`, { method: 'DELETE' });
+  req(`/api/projects/${id}`, { method: 'DELETE' });
 export const addMember = (projectId, userId, role = 'member') =>
-  req(`${PROJECTS_URL}/projects/${projectId}/members`, { method: 'POST', body: JSON.stringify({ user_id: userId, role }) });
+  req(`/api/projects/${projectId}/members`, { method: 'POST', body: JSON.stringify({ user_id: userId, role }) });
 export const removeMember = (projectId, userId) =>
-  req(`${PROJECTS_URL}/projects/${projectId}/members/${userId}`, { method: 'DELETE' });
+  req(`/api/projects/${projectId}/members/${userId}`, { method: 'DELETE' });
 
-// Tasks
+// Tasks - gre na /api/tasks/* -> BFF -> naloge:5001
 export const getTasks = (projectId) =>
-  req(`${TASKS_URL}/tasks${projectId ? `?project_id=${projectId}` : ''}`);
-export const getTask = (id) => req(`${TASKS_URL}/tasks/${id}`);
+  req(`/api/tasks${projectId ? `?project_id=${projectId}` : ''}`);
+export const getTask = (id) => req(`/api/tasks/${id}`);
 export const createTask = (data) =>
-  req(`${TASKS_URL}/tasks`, { method: 'POST', body: JSON.stringify(data) });
+  req('/api/tasks', { method: 'POST', body: JSON.stringify(data) });
 export const updateTask = (id, data) =>
-  req(`${TASKS_URL}/tasks/${id}`, { method: 'PUT', body: JSON.stringify(data) });
+  req(`/api/tasks/${id}`, { method: 'PUT', body: JSON.stringify(data) });
 export const setTaskStatus = (id, status) =>
-  req(`${TASKS_URL}/tasks/${id}/status`, { method: 'PATCH', body: JSON.stringify({ status }) });
+  req(`/api/tasks/${id}/status`, { method: 'PATCH', body: JSON.stringify({ status }) });
 export const deleteTask = (id) =>
-  req(`${TASKS_URL}/tasks/${id}`, { method: 'DELETE' });
+  req(`/api/tasks/${id}`, { method: 'DELETE' });

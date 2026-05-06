@@ -9,7 +9,8 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 def get_stub():
-    channel = grpc.insecure_channel("localhost:50052")
+    GRPC_HOST = os.getenv("GRPC_HOST", "localhost")
+    channel = grpc.insecure_channel(f"{GRPC_HOST}:50052")
     return task_pb2_grpc.TaskServiceStub(channel)
 
 def task_to_dict(t):
