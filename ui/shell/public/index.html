@@ -7,34 +7,17 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e2e8f0; }
-    #loading { display: flex; align-items: center; justify-content: center; height: 100vh; font-size: 1.2rem; color: #64748b; }
     #mf-root { min-height: 100vh; }
   </style>
-  <!-- Import map: vsak mikrofrontend je ločen modul -->
-  <script type="importmap">
-    {
-      "imports": {
-        "react": "https://esm.sh/react@18",
-        "react-dom": "https://esm.sh/react-dom@18",
-        "react-dom/client": "https://esm.sh/react-dom@18/client",
-        "react/jsx-runtime": "https://esm.sh/react@18/jsx-runtime",
-        "react-router-dom": "https://esm.sh/react-router-dom@6",
-        "single-spa": "https://esm.sh/single-spa@5",
-        "single-spa-react": "https://esm.sh/single-spa-react@4"
-      }
-    }
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/single-spa@5.9.4/lib/umd/single-spa.min.js"></script>
 </head>
 <body>
-  <div id="loading">Nalaganje TaskFlow…</div>
   <div id="mf-root"></div>
 
-  <script type="module">
-    import { registerApplication, start } from 'single-spa';
-
+  <script>
+    const { registerApplication, start } = singleSpa;
     const BFF_URL = 'http://127.0.0.1:4000';
 
-    // Shared auth state med mikrofrontendi
     let currentUser = JSON.parse(sessionStorage.getItem('tf_user') || 'null');
     const listeners = new Set();
 
@@ -53,31 +36,28 @@
       },
     };
 
-    // Registracija mikrofrontendov
     registerApplication({
       name: 'mf-auth',
-      app: () => import('http://127.0.0.1:3002/src/main.jsx'),
-      activeWhen: (location) => !currentUser || location.pathname === '/login',
-      customProps: { domElement: document.getElementById('mf-root') },
+      app: () => import('http://127.0.0.1:3002/mf-auth.mjs'),
+      activeWhen: () => !window.__taskflow__.getUser(),
     });
 
     registerApplication({
       name: 'mf-projekti',
-      app: () => import('http://127.0.0.1:3003/src/main.jsx'),
+      app: () => import('http://127.0.0.1:3003/mf-projekti.mjs'),
       activeWhen: (location) =>
-        !!currentUser && (location.pathname === '/' || location.pathname.startsWith('/projects') && !location.pathname.match(/^\/projects\/\d+/)),
-      customProps: { domElement: document.getElementById('mf-root') },
+        !!window.__taskflow__.getUser() &&
+        !location.pathname.match(/^\/projects\/\d+/),
     });
 
     registerApplication({
       name: 'mf-naloge',
-      app: () => import('http://127.0.0.1:3004/src/main.jsx'),
+      app: () => import('http://127.0.0.1:3004/mf-naloge.mjs'),
       activeWhen: (location) =>
-        !!currentUser && location.pathname.match(/^\/projects\/\d+/),
-      customProps: { domElement: document.getElementById('mf-root') },
+        !!window.__taskflow__.getUser() &&
+        !!location.pathname.match(/^\/projects\/\d+/),
     });
 
-    document.getElementById('loading').style.display = 'none';
     start({ urlRerouteOnly: true });
   </script>
 </body>

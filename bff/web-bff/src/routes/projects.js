@@ -20,10 +20,16 @@ router.get('/', handle(async (req, res) => {
 
 // GET /api/projects/:id  — projekt z nalogami in člani
 router.get('/:id', handle(async (req, res) => {
-  const [{ data: project }, { data: tasks }] = await Promise.all([
-    clients.projects.get(`/projects/${req.params.id}`),
-    clients.tasks.get(`/tasks?project_id=${req.params.id}`),
-  ]);
+  const { data: project } = await clients.projects.get(`/projects/${req.params.id}`);
+  
+  let tasks = [];
+  try {
+    const { data } = await clients.tasks.get(`/tasks?project_id=${req.params.id}`);
+    tasks = data;
+  } catch (e) {
+    // naloge servis ni dostopen, vrni prazen seznam
+  }
+  
   res.json({ ...project, tasks });
 }));
 

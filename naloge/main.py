@@ -1,3 +1,4 @@
+import os
 import logging
 import grpc
 from flask import Flask, jsonify, request
@@ -102,4 +103,4 @@ def delete_task(task_id):
     return "", 204
 
 if __name__ == "__main__":
-    app.run(port=5001)
+    app.run(host="0.0.0.0", port=5001)

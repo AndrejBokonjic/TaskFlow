@@ -1,5 +1,6 @@
 // mf-projekti/src/main.jsx
 // Projekti mikrofrontend - seznam in upravljanje projektov
+import 'http://127.0.0.1:3003/@react-refresh';
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 

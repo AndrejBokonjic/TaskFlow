@@ -1,6 +1,7 @@
 // mf-auth/src/main.jsx
 // Auth mikrofrontend - prijava in registracija
 // Eksportira single-spa lifecycle metode
+import 'http://127.0.0.1:3002/@react-refresh';
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 

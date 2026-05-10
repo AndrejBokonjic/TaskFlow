@@ -3,3 +3,10 @@ __pycache__
 .pytest_cache
 .env
 node_modules
+ui/build/static/js/main.7f51e7dd.js
+.gitignore
+ui/build/static/js/main.7f51e7dd.js.LICENSE.txt
+ui/build/static/css/main.955a621d.css.map
+ui/build/static/js/main.7f51e7dd.js.map
+ui/build/static/css/main.955a621d.css
+ui/build/asset-manifest.json

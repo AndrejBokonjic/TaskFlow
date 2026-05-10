@@ -1,4 +1,5 @@
-/ mf-naloge/src/main.jsx
+// mf-naloge/src/main.jsx
+import 'http://127.0.0.1:3004/@react-refresh';
 // Naloge mikrofrontend - Kanban board za naloge projekta
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -119,7 +120,9 @@ function NalogeApp() {
     }
   };
 
-  const tasksByStatus = (status) => tasks.filter(t => t.status === status);
+  const STATUS_MAP = { 0: 'TODO', 1: 'IN_PROGRESS', 2: 'DONE', 'TODO': 'TODO', 'IN_PROGRESS': 'IN_PROGRESS', 'DONE': 'DONE' };
+
+  const tasksByStatus = (status) => tasks.filter(t => STATUS_MAP[t.status] === status);
 
   const handleStatusChange = async (taskId, newStatus) => {
     try {
@@ -239,13 +242,22 @@ function NalogeApp() {
                       <div className="task-footer">
                         <span className="task-assignee">{usernameFor(task.user_id)}</span>
                         <div className="task-actions" onClick={e => e.stopPropagation()}>
-                          {STATUSES.filter(s => s !== status).map(s => (
-                            <button key={s} className="btn-status-move"
-                              title={`Premakni v ${STATUS_LABELS[s]}`}
-                              onClick={() => handleStatusChange(task.id, s)}>
-                              {s === 'TODO' ? '←' : s === 'IN_PROGRESS' ? (status === 'TODO' ? '→' : '←') : '→'}
-                            </button>
-                          ))}
+                          {status !== 'TODO' && (
+                            <button className="btn-status-move"
+                              title="Nazaj"
+                              onClick={() => {
+                                const prev = STATUSES[STATUSES.indexOf(status) - 1];
+                                handleStatusChange(task.id, prev);
+                              }}>←</button>
+                          )}
+                          {status !== 'DONE' && (
+                            <button className="btn-status-move"
+                              title="Naprej"
+                              onClick={() => {
+                                const next = STATUSES[STATUSES.indexOf(status) + 1];
+                                handleStatusChange(task.id, next);
+                              }}>→</button>
+                          )}
                         </div>
                       </div>
                     </div>
