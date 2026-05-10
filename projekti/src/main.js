@@ -10,6 +10,8 @@ require('dotenv').config();
 const app = express();
 app.use(express.json());
 
+const healthRouter = require('./api/health');
+app.use(healthRouter);
 // Swagger
 const swaggerDoc = YAML.load('./swagger.yaml');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));

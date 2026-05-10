@@ -1,3 +1,6 @@
+# naloge/main.py
+# VZOREC: Vmesnik za preverjanje stanja (Health Check) + obstoječa koda
+
 import os
 import logging
 import grpc
@@ -24,6 +27,29 @@ def task_to_dict(t):
         "status": t.status,
         "completed": t.completed,
     }
+
+# ── VZOREC: Vmesnik za preverjanje stanja ────────────────────────────
+@app.route("/health", methods=["GET"])
+def health_check():
+    """Preveri stanje storitve nalog in gRPC odvisnost."""
+    grpc_status = "UP"
+    try:
+        stub = get_stub()
+        stub.ListTasks(task_pb2.Empty(), timeout=2)
+    except grpc.RpcError as e:
+        grpc_status = f"DOWN: {e.code()}"
+    except Exception as e:
+        grpc_status = f"DOWN: {str(e)}"
+
+    overall = "UP" if grpc_status == "UP" else "DEGRADED"
+    return jsonify({
+        "status": overall,
+        "service": "naloge",
+        "dependencies": {
+            "grpc_task_server": grpc_status,
+        }
+    }), 200 if overall == "UP" else 207
+# ─────────────────────────────────────────────────────────────────────
 
 @app.route("/tasks", methods=["GET"])
 def list_tasks():
