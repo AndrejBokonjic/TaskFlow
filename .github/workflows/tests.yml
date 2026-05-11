@@ -4,22 +4,19 @@ on: [push]
 jobs:
   test-user:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
-
       - name: Install dependencies
         run: pip install -r uporabniki/requirements.txt
-
       - name: Run user tests
         run: pytest uporabniki/tests
         env:
           PYTHONPATH: uporabniki
-    
+
   test-task:
     runs-on: ubuntu-latest
     steps:
@@ -45,3 +42,37 @@ jobs:
       - name: Run projekti tests
         working-directory: projekti
         run: npm test
+
+  docker-build-push:
+    runs-on: ubuntu-latest
+    needs: [test-user, test-task, test-projekti]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push user image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./uporabniki
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/uporabniki:latest
+
+      - name: Build and push task image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./naloge
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/naloge:latest
+
+      - name: Build and push projekti image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./projekti
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/projekti:latest

@@ -1,5 +1,5 @@
 # naloge/main.py
-# VZOREC: Vmesnik za preverjanje stanja (Health Check) + obstoječa koda
+# VZOREC: Vmesnik za preverjanje stanja (Health Check)
 
 import os
 import logging
